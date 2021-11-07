@@ -4,17 +4,28 @@ import { ModificationNote } from '../common/model';
 const Schema = mongoose.Schema;
 
 const itemSchema = new Schema({
-    name: {
-        type: {
-            first_name: String,
-            middle_name: String,
-            last_name: String
-        }
-    },
-    email: String,
-    phone_number: String,
-    gender: String,
+    _id : { type : Number, required : true },
+    name: String,
+    desc:String,
+    effect:{
+         health: Number,
+         armor:Number,
+         as:Number,
+         ap:Number,
+         ad:Number,
+         damage:Number,
+         bonusAd:Number,
+         magicResist:Number,
+         CritChance:Number,
+         mana:Number,
+         bonusAs:Number,
+         magicReduction:Number,
 
+
+   },
+   icon:String,
+   unique:Boolean,
+   from:[{ type: Schema.Types.ObjectId, ref: 'items' }],
     modification_notes: [ModificationNote]
 });
 
