@@ -1,3 +1,6 @@
+import * as dotenv from "dotenv";
+
+dotenv.config();
 enum Environments {
     local_environment = 'local',
     dev_environment = 'dev',
@@ -24,11 +27,11 @@ class Environment {
         }
     }
 
-    getDBName(): String {
+    getDBName(): string {
         if (this.environment === Environments.prod_environment) {
             return 'db_test_project_prod';
         } else if (this.environment === Environments.dev_environment) {
-            return 'db_test_project_dev';
+            return process.env.DEV_URL!;
         } else if (this.environment === Environments.qa_environment) {
             return 'db_test_project_qa';
         } else {
