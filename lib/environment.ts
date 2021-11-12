@@ -12,7 +12,12 @@ class Environment {
     private environment: String;
 
     constructor(environment: String) {
-        this.environment = environment;
+        if(environment== '' || environment === undefined){
+             this.environment = environment;
+        }else{
+            this.environment='dev';
+        }
+       
     }
 
     getPort(): Number {
@@ -31,13 +36,13 @@ class Environment {
         if (this.environment === Environments.prod_environment) {
             return 'db_test_project_prod';
         } else if (this.environment === Environments.dev_environment) {
-            return process.env.DEV_URL!;
+            return process.env.DEV_DBURL!;
         } else if (this.environment === Environments.qa_environment) {
             return 'db_test_project_qa';
         } else {
-            return 'db_test_project_local';
+            return process.env.DEV_URL!;
         }
     }
 }
 
-export default new Environment(Environments.local_environment);
+export default new Environment(Environments.dev_environment);
