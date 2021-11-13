@@ -1,25 +1,52 @@
+import { CRUD } from 'modules/common/services/crud';
 import { IItem } from './model';
-import items from './schema';
+import Items from './schema';
 
-export default class ItemService {
+export default class ItemService implements CRUD {
+
+    async list(limit: number, page: number): Promise<any[]> {
+        return await Items.find().limit(limit)
+            .skip(limit * page)
+            .exec();
+    };
+    async create (resource: any) : Promise<any>{
+
+    };
+    async putById(id: string, resource: IItem) : Promise<string>{
+        const existingUser = await Items.findOneAndUpdate(
+            { _id: id },
+            { $set: resource },
+            { new: true }
+        ).exec();
     
-    public createItem(item_params: IItem, callback: any) {
-        const _session = new items(item_params);
-        _session.save(callback);
-    }
+        return existingUser;
+    };
+    async readById(id: string) : Promise<any>{
+        return await Items.findOne({ _id: id })   ;
+    };
+    async deleteById(id: string) : Promise<any> {
+        return await Items.deleteOne({ _id: id }).exec();
+    };
+ 
 
-    public filterItem(query: any, callback: any) {
-       items.findOne(query, callback);
-    }
 
-    public updateItem(item_params: IItem, callback: any) {
-        const query = { _id: item_params._id };
-        items.findOneAndUpdate(query, item_params, callback);
-    }
+    /*     public createItem(item_params: IItem, callback: any) {
+            const _session = new Items(item_params);
+            _session.save(callback);
+        }
     
-    public deleteItem(_id: String, callback: any) {
-        const query = { _id: _id };
-        items.deleteOne(query, callback);
-    }
+        public filterItem(query: any, callback: any) {
+           Items.findOne(query, callback);
+        }
+    
+        public updateItem(item_params: IItem, callback: any) {
+            const query = { _id: item_params._id };
+            Items.findOneAndUpdate(query, item_params, callback);
+        }
+        
+        public deleteItem(_id: String, callback: any) {
+            const query = { _id: _id };
+            Items.deleteOne(query, callback);
+        } */
 
 }

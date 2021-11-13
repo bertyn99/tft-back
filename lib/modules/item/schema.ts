@@ -5,8 +5,8 @@ const Schema = mongoose.Schema;
 
 const itemSchema = new Schema({
     _id : { type : Number, required : true },
-    name: String,
-    desc:String,
+    name: {type: String, required:true},
+    desc: {type: String, required:true},
     effect:{
          health: Number,
          armor:Number,
