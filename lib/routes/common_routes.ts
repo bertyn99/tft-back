@@ -1,10 +1,17 @@
-//lib/routes/common_routes.ts
-import { Application, Request, Response } from 'express';
-export class CommonRoutes {
-   public route(app: Application) {
-      // Mismatch URL
-      app.all('*', function (req: Request, res: Response) {
-         res.status(404).send({ error: true, message: 'Check your URL please' });
-      });
-   }
+//lib/routes/items_routes.ts
+import {Application, Request, Response } from 'express';
+export abstract class CommonRoutesConfig {
+    app: Application;
+    name: string;
+
+    constructor(app: Application, name: string) {
+        this.app = app;
+        this.name = name;
+        this.configureRoutes();
+    }
+    getName() {
+        return this.name;
+    }
+
+    abstract configureRoutes(): Application;
 }
