@@ -1,23 +1,22 @@
-import express, {Request,Response,Application} from 'express';
+import express from 'express';
 import bodyParser from "body-parser";
-import * as mongoose from 'mongoose';
+import DB from '../modules/common/services/mongoose.service'
 import environment from "../environment";
-import { ItemsRoutes } from "../routes/items";
-import {CommonRoutes} from "../routes/common_routes"
+import { ItemsRoutes } from "../routes/items_routes";
+import {CommonRoutesConfig} from "../routes/common_routes";
 class App {
    public app: express.Application;
-   public mongoUrl: string = 'mongodb://localhost/' + environment.getDBName();
+   public mongoUrl: string = `${environment.getDBName()}`;
 
    //route
-   private test_routes: ItemsRoutes = new ItemsRoutes(); 
-   private common: CommonRoutes= new CommonRoutes();
+   private routes:Array<CommonRoutesConfig> = [];
 
    constructor() {
       this.app = express();
       this.config();
       this.mongoSetup();
-      this.test_routes.route(this.app); 
-      this.common.route(this.app)
+      //push our different route in this route array
+      this.routes.push(new ItemsRoutes(this.app))
    }
    private config(): void {
       // support application/json type post data
@@ -26,9 +25,15 @@ class App {
       this.app.use(express.urlencoded({ extended: false }));
    }
 
+   public logRoute(): void{
+      this.routes.forEach((route: CommonRoutesConfig) => {
+         console.log(`Routes configured for ${route.getName()}`);
+     });
+   }
+
    private mongoSetup(): void {
-      mongoose.connect(this.mongoUrl);
+      new DB(this.mongoUrl)
    }
 }
 
-export default new App().app;
+export default new App();
