@@ -1,4 +1,4 @@
-import { CRUD } from 'modules/common/services/crud';
+import { CRUD } from '../common/model/crud';
 import { IItem } from './model';
 import Items from './schema';
 
