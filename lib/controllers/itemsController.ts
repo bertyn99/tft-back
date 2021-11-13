@@ -21,14 +21,39 @@ export class ItemController {
        }
 
        try{
-        this.item_service.create(item);   
-
+        this.item_service.create(item); 
+          
        }catch(err){
 
        }
        
     }
 
-    async 
+    async index (req:Request,res:Response){
+        
+        try {
+            let items : IItem[]= await this.item_service.list(100,20);
+
+            successResponse("List des items",items,res);
+        } catch (err) {
+            if(err){
+
+            }
+        }
+        
+    }
+
+
+    async getItemById(req:Request,res:Response){
+        try {
+            let item : IItem= await this.item_service.readById(req.params.id);
+
+            successResponse(`L'item avec l'id ${item._id}`,item,res);
+        } catch (err) {
+            if(err){
+
+            }
+        }
+    }
 
 }
