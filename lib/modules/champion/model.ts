@@ -2,33 +2,48 @@ import { ModificationNote } from "../common/model";
 
 export interface Ability {
     desc: String;
-    icon:String;
-    name:String;
-    variables:[{name:String,value:[Number]}];
+    icon: String;
+    name: String;
+    variables: [{ name: String, value: [Number] }];
+}
+
+
+
+export interface Effect {
+    maxUnits:  number;
+    minUnits:  number;
+    style:     number;
+    variables: [{ name: String, value: [Number] }];
+}
+export interface Trait {
+    apiName: string;
+    desc:    string;
+    effects: Effect[];
+    icon:    string;
+    name:    string;
 }
 
 export interface Statistic {
-    armor:String,
-    attackSpeed:Number,
-    critChance:Number,
-    critMutiplier:Number,
-    damage:Number,
-    hp:Number,
-    initialMana:Number,
-    magicResist:Number,
-    mana:Number,
-    range:Number
-
+    armor: number;
+    attackSpeed: number;
+    critChance: number;
+    critMultiplier: number;
+    damage: number;
+    hp: number;
+    initialMana: number;
+    magicResist: number;
+    mana: number;
+    range: number;
 }
 
 
 export interface IChampion {
     _id?: String;
-    name:String;
-    icon:String;
-    cost:Number;
-    ability:Ability;
-    stats:Statistic
-    traits:[String]
+    name: String;
+    icon: String;
+    cost: Number;
+    ability: Ability;
+    stats: Statistic
+    traits: Trait[]
     modification_notes: ModificationNote[]
 }
