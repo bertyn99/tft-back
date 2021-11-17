@@ -4,7 +4,7 @@ import Items from './schema';
 
 export default class ItemService implements CRUD {
 
-    async list(limit: number, page: number): Promise<any[]> {
+    async list(limit: number, page: number): Promise<IItem[]> {
         return await Items.find().limit(limit)
             .skip(limit * page)
             .exec();

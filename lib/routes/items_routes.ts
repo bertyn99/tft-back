@@ -22,7 +22,7 @@ export class ItemsRoutes extends CommonRoutesConfig {
             next();
          })
          .get((req: Request, res: Response) => {
-            res.status(200).send(`GET requested for id ${req.params.itemId}`);
+           this.controller.getItemById(req,res);
          })
          .put((req: Request, res: Response) => {
             res.status(200).send(`PUT requested for id ${req.params.itemId}`);
