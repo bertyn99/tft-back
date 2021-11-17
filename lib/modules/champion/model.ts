@@ -1,6 +1,7 @@
+import { Document } from "mongoose";
 import { ModificationNote } from "../common/model";
 
-export interface Ability {
+export interface Ability extends Document {
     desc: String;
     icon: String;
     name: String;
@@ -9,13 +10,13 @@ export interface Ability {
 
 
 
-export interface Effect {
+export interface Effect extends Document {
     maxUnits:  number;
     minUnits:  number;
     style:     number;
     variables: [{ name: String, value: [Number] }];
 }
-export interface Trait {
+export interface Trait extends Document {
     apiName: string;
     desc:    string;
     effects: Effect[];
@@ -23,7 +24,7 @@ export interface Trait {
     name:    string;
 }
 
-export interface Statistic {
+export interface Statistic extends Document{
     armor: number;
     attackSpeed: number;
     critChance: number;
@@ -37,7 +38,7 @@ export interface Statistic {
 }
 
 
-export interface IChampion {
+export interface IChampion  extends Document{
     _id?: String;
     name: String;
     icon: String;
