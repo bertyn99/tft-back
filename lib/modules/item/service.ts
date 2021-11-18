@@ -9,25 +9,25 @@ export default class ItemService implements CRUD {
             .skip(limit * page)
             .exec();
     };
-    async create (resource: any) : Promise<any>{
+    async create(resource: any): Promise<any> {
 
     };
-    async putById(id: string, resource: IItem) : Promise<string>{
+    async putById(id: string, resource: IItem): Promise<string> {
         const existingUser = await Items.findOneAndUpdate(
             { _id: id },
             { $set: resource },
             { new: true }
         ).exec();
-    
+
         return existingUser;
     };
-    async readById(id: string) : Promise<any>{
-        return await Items.findOne({ _id: id })   ;
+    async readById(id: string): Promise<IItem> {
+        return await Items.findOne({ _id: id });
     };
-    async deleteById(id: string) : Promise<any> {
+    async deleteById(id: string): Promise<any> {
         return await Items.deleteOne({ _id: id }).exec();
     };
- 
+
 
 
     /*     public createItem(item_params: IItem, callback: any) {
