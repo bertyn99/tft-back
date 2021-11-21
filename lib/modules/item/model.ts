@@ -1,3 +1,4 @@
+import { Document } from "mongoose";
 import { ModificationNote } from "../common/model";
 
 export interface Effects {
@@ -15,14 +16,13 @@ export interface Effects {
     magicReduction?: Number,
 
 }
-export interface IItem {
-    _id?: String;
-    name: String;
-    desc: String;
+export interface IItem extends Document {
+    name: String,
+    desc: String,
     effect: Effects,
-    icon: String;
-    unique: Boolean;
-    from: Array<Number>;
+    icon: String,
+    unique: Boolean,
+    from: string[]
 
-    modification_notes?: ModificationNote[]
+    modification_notes: ModificationNote[]
 }

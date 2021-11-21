@@ -9,8 +9,9 @@ export default class ItemService implements CRUD {
             .skip(limit * page)
             .exec();
     };
-    async create(resource: any): Promise<any> {
-
+    async create(resource: IItem): Promise<any> {
+        let item = await new Items(resource)
+        return item.save();
     };
     async putById(id: string, resource: IItem): Promise<string> {
         const existingUser = await Items.findOneAndUpdate(
@@ -18,7 +19,6 @@ export default class ItemService implements CRUD {
             { $set: resource },
             { new: true }
         ).exec();
-
         return existingUser;
     };
     async readById(id: string): Promise<IItem> {
