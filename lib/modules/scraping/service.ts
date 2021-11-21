@@ -1,7 +1,15 @@
 import axios from "axios"
 
-export default class ScrappingService {
+//Item
+import { IItem } from "../item/model";
+import ItemService from "../item/service";
 
+// Champion 
+import { IChampion, Trait } from "../champion/model";
+import ChampionService from "../champion/service";
+
+export default class ScrappingService {
+    public items: IItem[] = [];
     async fetchData() {
         const url = "https://raw.communitydragon.org/latest/cdragon/tft/en_us.json"
 
@@ -12,12 +20,53 @@ export default class ScrappingService {
             console.log(err)
         }
     }
-    parseData(data: string) {
+    parseData(data: any, model: string): any {
+        if (model == 'item') {
+            let items: IItem[] = []
+            data.items.forEach((elm: any, i: number) => {
+                if (elm.id != 88 && elm.id != 403 && elm.id != 206 && elm.id != 18 && elm.id != 68 && elm.id != 58 && elm.id != 200 && elm.id != 406 && !(elm.id == 604 && Object.keys(elm.effects).length > 0)) {
+                    let id = elm.id
+                    elm._id = elm.id
+                    elm.icon = "https://raw.communitydragon.org/latest/game/" + elm.icon.toLowerCase().replace('.dds', '.png')
+                    delete elm.id;
+                    items.push(elm)
 
+                }
+            });
+
+
+
+            return items
+        }
+        if (model == 'champion') {
+            let champions: IChampion[] = [];
+
+            /*    data.sets['6'].champions.forEach(elm => {
+                   let champion: IChampion = { ...elm }
+                   champions.push(elm)
+               }); */
+
+
+            return champions
+        }
+        if (model == 'trait') {
+            let traits: Trait[] = []
+
+
+            return traits
+        }
     }
 
+    async saveDataToDB(model: string, data: any[]): Promise<any> {
+        const service = new ItemService();
+        data.forEach((elm) => {
+            service.create(elm)
+        })
+    }
+    async init() {
 
-    init() {
-        this.fetchData();
+        let data = await this.fetchData();
+        this.items = this.parseData(data, 'item')
+        this.saveDataToDB("Items", this.items)
     }
 }
