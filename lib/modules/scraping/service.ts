@@ -64,7 +64,8 @@ export default class ScrappingService {
         })
     }
     async init() {
-
+        let s = new ItemService()
+        s.clearItems()
         let data = await this.fetchData();
         this.items = this.parseData(data, 'item')
         this.saveDataToDB("Items", this.items)

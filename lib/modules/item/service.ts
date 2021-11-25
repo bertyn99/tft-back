@@ -27,6 +27,9 @@ export default class ItemService implements CRUD {
     async deleteById(id: string): Promise<any> {
         return await Items.deleteOne({ _id: id }).exec();
     };
+    async clearItems(): Promise<any> {
+        return await Items.deleteMany();
+    }
 
 
 
