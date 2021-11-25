@@ -24,13 +24,17 @@ export default class ScrappingService {
         if (model == 'item') {
             let items: IItem[] = []
             data.items.forEach((elm: any, i: number) => {
-                if (elm.id != 88 && elm.id != 403 && elm.id != 206 && elm.id != 18 && elm.id != 68 && elm.id != 58 && elm.id != 200 && elm.id != 406 && !(elm.id == 604 && Object.keys(elm.effects).length > 0)) {
+                let reg= new RegExp("(set4|tft4|\/radiant|\/mercenary|Light|Shadow|\/augments|WardensMail|\/spatula\/(?!set6))", "gmi");
+            
+               /*  if (elm.id != 88 && elm.id != 403 && elm.id != 206 && elm.id != 18 && elm.id != 68 && elm.id != 58 && elm.id != 200 && elm.id != 406 && !(elm.id == 604 && Object.keys(elm.effects).length > 0))  */
+               if(!reg.test(elm.icon)){
                     let id = elm.id
                     elm._id = elm.id
                     elm.icon = "https://raw.communitydragon.org/latest/game/" + elm.icon.toLowerCase().replace('.dds', '.png')
                     delete elm.id;
-                    items.push(elm)
-
+                    if(items.some(item=>item._id==5)) items.push(elm)
+                   
+                    
                 }
             });
 
