@@ -46,9 +46,9 @@ export class ItemController {
 
     async getItemById(req: Request, res: Response) {
         try {
-            let item: IItem = await this.item_service.readById(req.params.id);
+            let item: IItem | null = await this.item_service.readById(req.params.id);
 
-            successResponse(`L'item avec l'id ${item._id}`, item, res);
+            successResponse(`L'item avec l'id ${item!._id}`, item, res);
         } catch (err) {
             if (err) {
 
