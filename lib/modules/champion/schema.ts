@@ -1,17 +1,18 @@
 import * as mongoose from 'mongoose';
 import { ModificationNote } from '../common/model';
-import  { Ability,IChampion,Statistic} from './model'
-const Schema= mongoose.Schema;
+import { Ability, IChampion, Statistic } from './model'
+const Schema = mongoose.Schema;
 
-const Ability= new Schema({
+const Ability = new Schema({
     desc: String,
     icon: String,
     name: String,
     variables: [{ name: String, value: [Number] }]
-});
+},
+    { _id: false });
 
 const Statistic = new Schema({
-    armor:Number,
+    armor: Number,
     attackSpeed: Number,
     critChance: Number,
     critMultiplier: Number,
@@ -21,15 +22,16 @@ const Statistic = new Schema({
     magicResist: Number,
     mana: Number,
     range: Number
-})
-const championSchema= new Schema({
-    name:String,
-    icon:String,
-    cost:Number,
+},
+    { _id: false })
+const championSchema = new Schema({
+    name: String,
+    icon: String,
+    cost: Number,
     ability: Ability,
-    stats:Statistic,
-    traits:[String],
+    stats: Statistic,
+    traits: [String],
     modification_notes: [ModificationNote]
 });
 
-export default mongoose.model<IChampion>('champions',championSchema);
+export default mongoose.model<IChampion>('champions', championSchema);
