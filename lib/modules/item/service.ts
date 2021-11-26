@@ -13,15 +13,15 @@ export default class ItemService implements CRUD {
         let item = await new Items(resource)
         return item.save();
     };
-    async putById(id: string, resource: IItem): Promise<string> {
-        const existingUser = await Items.findOneAndUpdate(
+    async putById(id: string, resource: IItem): Promise<IItem | null> {
+        const existingItem = await Items.findOneAndUpdate(
             { _id: id },
             { $set: resource },
             { new: true }
         ).exec();
-        return existingUser;
+        return existingItem;
     };
-    async readById(id: string): Promise<IItem> {
+    async readById(id: string): Promise<IItem | null> {
         return await Items.findOne({ _id: id });
     };
     async deleteById(id: string): Promise<any> {

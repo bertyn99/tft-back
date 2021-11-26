@@ -5,11 +5,15 @@ import { IItem } from "../item/model";
 import ItemService from "../item/service";
 
 // Champion 
-import { IChampion, Trait } from "../champion/model";
+import { IChampion } from "../champion/model";
 import ChampionService from "../champion/service";
 
+
+// Trait
+import { ITrait } from "modules/trait/model";
 export default class ScrappingService {
     public items: IItem[] = [];
+    public traits: IItem[] = [];
     public champions: IChampion[] = [];
     async fetchData() {
         const url = "https://raw.communitydragon.org/latest/cdragon/tft/en_us.json"
@@ -59,7 +63,7 @@ export default class ScrappingService {
             return champions
         }
         if (model == 'trait') {
-            let traits: Trait[] = []
+            let traits: ITrait[] = []
 
 
             return traits
@@ -90,8 +94,10 @@ export default class ScrappingService {
         let data = await this.fetchData();
 
         this.items = this.parseData(data, 'item')
+        this.traits = this.parseData(data, 'item')
         this.champions = this.parseData(data, 'champion')
         console.log("nb d'items #" + this.items.length)
+        console.log("nb de trait #" + this.traits.length)
         console.log("nb de champions #" + this.champions.length)
         this.saveDataToDB("Items", this.items)
         this.saveDataToDB("Champions", this.champions)
