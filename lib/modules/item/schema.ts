@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose';
 import { ModificationNote } from '../common/model';
+import { IItem } from './model';
 
 const Schema = mongoose.Schema;
 
@@ -29,4 +30,5 @@ const itemSchema = new Schema({
     modification_notes: [ModificationNote]
 });
 
-export default mongoose.model('items', itemSchema);
+itemSchema.index({ name: "text", desc: "text" })
+export default mongoose.model<IItem>('items', itemSchema);
