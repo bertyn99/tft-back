@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, Mongoose, Types } from "mongoose";
 import { ModificationNote } from "../common/model";
 
 export interface Ability extends Document {
@@ -9,22 +9,7 @@ export interface Ability extends Document {
 }
 
 
-
-export interface Effect extends Document {
-    maxUnits:  number;
-    minUnits:  number;
-    style:     number;
-    variables: [{ name: String, value: [Number] }];
-}
-export interface Trait extends Document {
-    apiName: string;
-    desc:    string;
-    effects: Effect[];
-    icon:    string;
-    name:    string;
-}
-
-export interface Statistic extends Document{
+export interface Statistic extends Document {
     armor: number;
     attackSpeed: number;
     critChance: number;
@@ -38,13 +23,12 @@ export interface Statistic extends Document{
 }
 
 
-export interface IChampion  extends Document{
-    _id?: String;
+export interface IChampion extends Document {
     name: String;
     icon: String;
     cost: Number;
     ability: Ability;
     stats: Statistic
-    traits: Trait[]
+    traits: Types.ObjectId[]
     modification_notes: ModificationNote[]
 }
