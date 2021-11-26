@@ -8,7 +8,10 @@ export default class ChampionService implements CRUD {
             .skip(limit * page)
             .exec();
     };
-    async create(resource: any): Promise<any> {
+    async create(resource: IChampion): Promise<any> {
+
+        let champ = new Champion(resource)
+        return await champ.save();
 
     };
     async putById(id: string, resource: IChampion): Promise<any> {
@@ -27,4 +30,7 @@ export default class ChampionService implements CRUD {
         return await Champion.deleteOne({ _id: id }).exec();
     };
 
+    async clearChampions(): Promise<any> {
+        return await Champion.deleteMany();
+    }
 }

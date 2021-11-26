@@ -1,5 +1,5 @@
-import axios from "axios"
-
+import axios from "axios";
+import _ from 'lodash';
 //Item
 import { IItem } from "../item/model";
 import ItemService from "../item/service";
@@ -10,6 +10,7 @@ import ChampionService from "../champion/service";
 
 export default class ScrappingService {
     public items: IItem[] = [];
+    public champions: IChampion[] = [];
     async fetchData() {
         const url = "https://raw.communitydragon.org/latest/cdragon/tft/en_us.json"
 
@@ -22,33 +23,37 @@ export default class ScrappingService {
     }
     parseData(data: any, model: string): any {
         if (model == 'item') {
+
+
             let items: IItem[] = []
             data.items.forEach((elm: any, i: number) => {
-                let reg= new RegExp("(set4|tft4|\/radiant|\/mercenary|Light|Shadow|\/augments|WardensMail|\/spatula\/(?!set6))", "gmi");
-            
-               /*  if (elm.id != 88 && elm.id != 403 && elm.id != 206 && elm.id != 18 && elm.id != 68 && elm.id != 58 && elm.id != 200 && elm.id != 406 && !(elm.id == 604 && Object.keys(elm.effects).length > 0))  */
-               if(!reg.test(elm.icon)){
+                const regIcon: RegExp = new RegExp("(set4|tft4|\/radiant|\/mercenary|Light|Shadow|Shadow\/S|\/augments|consumable_shopreroll|HexBuff|WardensMail|\/spatula\/(?!set6))", "gmi");
+                const regDesc: RegExp = new RegExp("(tft_item_|Cost Units|Cost Unit|Consumable|[1-9] gold|Random Component|Loot goes here)", "gmi");
+                if (!regIcon.test(elm.icon) && !regDesc.test(elm.desc)) {
                     let id = elm.id
-                    elm._id = elm.id
+                    elm._id = Math.abs(elm.id)
                     elm.icon = "https://raw.communitydragon.org/latest/game/" + elm.icon.toLowerCase().replace('.dds', '.png')
                     delete elm.id;
-                    if(items.some(item=>item._id==5)) items.push(elm)
-                   
-                    
+                    items.push(elm)
+
+
                 }
             });
-
-
-
+            items = _.uniqBy(_.uniqBy(items, '_id'), 'name')
             return items
         }
         if (model == 'champion') {
             let champions: IChampion[] = [];
 
-            /*    data.sets['6'].champions.forEach(elm => {
-                   let champion: IChampion = { ...elm }
-                   champions.push(elm)
-               }); */
+            data.sets['6'].champions.forEach((elm: any, i: number) => {
+                const regIc: RegExp = new RegExp('(TFTDebug_Dummy|TFT6_HextechDragon|TFT6_MercenaryChest|TFT6_Scarab)', 'gmi')
+                if (!regIc.test(elm.icon)) {
+
+                    elm.icon = "https://raw.communitydragon.org/latest/game/" + elm.icon.toLowerCase().replace('.dds', '.png')
+                    delete elm.id;
+                    champions.push(elm)
+                }
+            });
 
 
             return champions
@@ -62,16 +67,34 @@ export default class ScrappingService {
     }
 
     async saveDataToDB(model: string, data: any[]): Promise<any> {
-        const service = new ItemService();
-        data.forEach((elm) => {
-            service.create(elm)
-        })
+        if (model == "Items") {
+            const service = new ItemService();
+            data.forEach((elm) => {
+                service.create(elm)
+            })
+        }
+        if (model == "Champions") {
+            console.log("id")
+            const service = new ChampionService();
+            data.forEach((elm) => {
+                service.create(elm)
+            })
+        }
     }
     async init() {
         let s = new ItemService()
-        s.clearItems()
+        let c = new ChampionService()
+        s.clearItems().then((value) => console.log(`Items ${value.deletedCount}row deleted`))
+
+        c.clearChampions().then((value) => console.log(`Champ ${value.deletedCount}row deleted`))
         let data = await this.fetchData();
+
         this.items = this.parseData(data, 'item')
+        this.champions = this.parseData(data, 'champion')
+        console.log("nb d'items #" + this.items.length)
+        console.log("nb de champions #" + this.champions.length)
         this.saveDataToDB("Items", this.items)
+        this.saveDataToDB("Champions", this.champions)
+
     }
 }
