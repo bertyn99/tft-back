@@ -11,6 +11,8 @@ import ChampionService from "../champion/service";
 
 // Trait
 import { ITrait } from "modules/trait/model";
+import TraitService from "modules/trait/service";
+
 export default class ScrappingService {
     public items: IItem[] = [];
     public traits: IItem[] = [];
@@ -81,29 +83,40 @@ export default class ScrappingService {
             })
         }
         if (model == "Champions") {
-            console.log("id")
+         
             const service = new ChampionService();
             data.forEach((elm) => {
                 service.create(elm)
+            })
+        }
+        if (model == "Traits") {
+           
+            const service = new TraitService();
+            data.forEach((elm) => {
+                service.create(elm);
             })
         }
     }
     async init() {
         let s = new ItemService()
         let c = new ChampionService()
+        let t = new TraitService()
         s.clearItems().then((value) => console.log(`Items ${value.deletedCount}row deleted`))
 
         c.clearChampions().then((value) => console.log(`Champ ${value.deletedCount}row deleted`))
+ 
+
+        t.clearTrait().then((value) => console.log(`Champ ${value.deletedCount}row deleted`))
         let data = await this.fetchData();
 
         this.items = this.parseData(data, 'item')
-        this.traits = this.parseData(data, 'item')
+        this.traits = this.parseData(data, 'trait')
         this.champions = this.parseData(data, 'champion')
         console.log("nb d'items #" + this.items.length)
         console.log("nb de trait #" + this.traits.length)
         console.log("nb de champions #" + this.champions.length)
-        this.saveDataToDB("Items", this.items)
-        this.saveDataToDB("Champions", this.champions)
-
+        this.saveDataToDB("Items", this.items);
+        this.saveDataToDB("Champions", this.champions);
+        this.saveDataToDB("Traits", this.traits);
     }
 }

@@ -28,4 +28,7 @@ export default class TraitService implements CRUD {
         return await Trait.deleteOne({ _id: id }).exec();
     };
 
+    async clearTrait(): Promise<any> {
+        return await Trait.deleteMany();
+    }
 }
