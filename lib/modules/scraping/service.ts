@@ -64,7 +64,10 @@ export default class ScrappingService {
         }
         if (model == 'trait') {
             let traits: ITrait[] = []
-
+            data.sets['6'].traits.forEach((elm: any) => {
+                elm.icon = "https://raw.communitydragon.org/latest/game/" + elm.icon.toLowerCase().replace('.dds', '.png');
+                traits.push(elm);
+            })
 
             return traits
         }
