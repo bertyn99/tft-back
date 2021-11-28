@@ -19,4 +19,4 @@ const traitSchema = new Schema({
     name: String
 });
 
-export default mongoose.model<ITrait>('champions', traitSchema);
+export default mongoose.model<ITrait>('trait', traitSchema);
