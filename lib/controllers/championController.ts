@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { insufficientParameters, mongoError, successResponse, failureResponse } from '../modules/common/services/service';
+import { mongoError, successResponse, failureResponse } from '../modules/common/services/service';
 import { IChampion } from '../modules/champion/model';
 import ChampionService from '../modules/champion/service';
 

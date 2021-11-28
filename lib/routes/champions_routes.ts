@@ -1,4 +1,4 @@
-import { ChampionController } from "controllers/championController";
+import { ChampionController } from "../controllers/championController";
 import { Application, Request, Response, NextFunction } from "express";
 import { CommonRoutesConfig } from "./common_routes";
 
