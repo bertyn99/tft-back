@@ -28,7 +28,7 @@ const itemSchema = new Schema({
     unique: Boolean,
     from: [{ type: Number, ref: 'items' }],
     modification_notes: [ModificationNote]
-});
+}, { _id: false });
 
 itemSchema.index({ name: "text", desc: "text" })
 export default mongoose.model<IItem>('items', itemSchema);
