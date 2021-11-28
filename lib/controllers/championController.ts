@@ -7,13 +7,13 @@ import ChampionService from '../modules/champion/service';
 export class ChampionController {
     private champService: ChampionService = new ChampionService();
 
-    async create(req: Request, res: Response) {
+    /* async create(req: Request, res: Response) {
 
-    }
+    } */
 
     async index(req: Request, res: Response) {
         try {
-            let champions: IChampion[] = await this.champService.list(100, 20);
+            const champions: IChampion[] = await this.champService.list(100, 0);
 
             successResponse("Listes des champions", champions, res);
         } catch (err) {
@@ -25,7 +25,7 @@ export class ChampionController {
 
     async getChampById(req: Request, res: Response) {
         try {
-            let champion: IChampion = await this.champService.readById(req.params.id);
+            const champion: IChampion = await this.champService.readById(req.params.id);
 
             successResponse(`L'item avec l'id ${champion._id}`, champion, res);
         } catch (err) {
