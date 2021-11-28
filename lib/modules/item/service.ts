@@ -1,3 +1,4 @@
+import * as mongoose from 'mongoose';
 import { CRUD } from '../common/model/crud';
 import { IItem } from './model';
 import Items from './schema';
@@ -8,11 +9,11 @@ export default class ItemService implements CRUD {
         return await Items.find().limit(limit)
             .skip(limit * page)
             .exec();
-    };
+    }
     async create(resource: IItem): Promise<any> {
-        let item = await new Items(resource)
+        const item = await new Items(resource)
         return item.save();
-    };
+    }
     async putById(id: string, resource: IItem): Promise<IItem | null> {
         const existingItem = await Items.findOneAndUpdate(
             { _id: id },
@@ -20,13 +21,13 @@ export default class ItemService implements CRUD {
             { new: true }
         ).exec();
         return existingItem;
-    };
+    }
     async readById(id: string): Promise<IItem | null> {
         return await Items.findOne({ _id: id });
-    };
+    }
     async deleteById(id: string): Promise<any> {
         return await Items.deleteOne({ _id: id }).exec();
-    };
+    }
     async clearItems(): Promise<any> {
         return await Items.deleteMany();
     }

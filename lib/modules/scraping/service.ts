@@ -10,8 +10,8 @@ import ChampionService from "../champion/service";
 
 
 // Trait
-import { ITrait } from "modules/trait/model";
-import TraitService from "modules/trait/service";
+import { ITrait } from "../trait/model";
+import TraitService from "../trait/service";
 
 export default class ScrappingService {
     public items: IItem[] = [];
@@ -21,7 +21,7 @@ export default class ScrappingService {
         const url = "https://raw.communitydragon.org/latest/cdragon/tft/en_us.json"
 
         try {
-            let data: any = (await axios.get(url)).data
+            const data: any = (await axios.get(url)).data
             return data;
         } catch (err) {
             console.log(err)
@@ -33,10 +33,10 @@ export default class ScrappingService {
 
             let items: IItem[] = []
             data.items.forEach((elm: any, i: number) => {
-                const regIcon: RegExp = new RegExp("(set4|tft4|\/radiant|\/mercenary|Light|Shadow|Shadow\/S|\/augments|consumable_shopreroll|HexBuff|WardensMail|\/spatula\/(?!set6))", "gmi");
-                const regDesc: RegExp = new RegExp("(tft_item_|Cost Units|Cost Unit|Consumable|[1-9] gold|Random Component|Loot goes here)", "gmi");
+                const regIcon = new RegExp("(set4|tft4|\/radiant|\/mercenary|Light|Shadow|Shadow\/S|\/augments|consumable_shopreroll|HexBuff|WardensMail|\/spatula\/(?!set6))", "gmi");
+                const regDesc = new RegExp("(tft_item_|Cost Units|Cost Unit|Consumable|[1-9] gold|Random Component|Loot goes here)", "gmi");
                 if (!regIcon.test(elm.icon) && !regDesc.test(elm.desc)) {
-                    let id = elm.id
+                    const id = elm.id
                     elm._id = Math.abs(elm.id)
                     elm.icon = "https://raw.communitydragon.org/latest/game/" + elm.icon.toLowerCase().replace('.dds', '.png')
                     delete elm.id;
@@ -49,10 +49,10 @@ export default class ScrappingService {
             return items
         }
         if (model == 'champion') {
-            let champions: IChampion[] = [];
+            const champions: IChampion[] = [];
 
-            data.sets['6'].champions.forEach((elm: any, i: number) => {
-                const regIc: RegExp = new RegExp('(TFTDebug_Dummy|TFT6_HextechDragon|TFT6_MercenaryChest|TFT6_Scarab)', 'gmi')
+            data.sets['6'].champions.forEach((elm: any) => {
+                const regIc = new RegExp('(TFTDebug_Dummy|TFT6_HextechDragon|TFT6_MercenaryChest|TFT6_Scarab)', 'gmi')
                 if (!regIc.test(elm.icon)) {
 
                     elm.icon = "https://raw.communitydragon.org/latest/game/" + elm.icon.toLowerCase().replace('.dds', '.png')
@@ -70,6 +70,7 @@ export default class ScrappingService {
                 elm.icon = "https://raw.communitydragon.org/latest/game/" + elm.icon.toLowerCase().replace('.dds', '.png');
                 traits.push(elm);
             })
+            traits = _.uniqBy(traits, 'name')
 
             return traits
         }
@@ -83,14 +84,14 @@ export default class ScrappingService {
             })
         }
         if (model == "Champions") {
-         
+
             const service = new ChampionService();
             data.forEach((elm) => {
                 service.create(elm)
             })
         }
         if (model == "Traits") {
-           
+
             const service = new TraitService();
             data.forEach((elm) => {
                 service.create(elm);
@@ -98,16 +99,16 @@ export default class ScrappingService {
         }
     }
     async init() {
-        let s = new ItemService()
-        let c = new ChampionService()
-        let t = new TraitService()
-        s.clearItems().then((value) => console.log(`Items ${value.deletedCount}row deleted`))
+        /*    const s = new ItemService()
+           const c = new ChampionService()
+           const t = new TraitService()
+           s.clearItems().then((value) => console.log(`Items ${value.deletedCount}row deleted`))
+   
+           c.clearChampions().then((value) => console.log(`Champ ${value.deletedCount}row deleted`))
+           t.clearTrait().then((value) => console.log(`Champ ${value.deletedCount}row deleted`))
+   
 
-        c.clearChampions().then((value) => console.log(`Champ ${value.deletedCount}row deleted`))
- 
-
-        t.clearTrait().then((value) => console.log(`Champ ${value.deletedCount}row deleted`))
-        let data = await this.fetchData();
+        const data = await this.fetchData();
 
         this.items = this.parseData(data, 'item')
         this.traits = this.parseData(data, 'trait')
@@ -117,6 +118,6 @@ export default class ScrappingService {
         console.log("nb de champions #" + this.champions.length)
         this.saveDataToDB("Items", this.items);
         this.saveDataToDB("Champions", this.champions);
-        this.saveDataToDB("Traits", this.traits);
+        this.saveDataToDB("Traits", this.traits); */
     }
 }
