@@ -32,12 +32,12 @@ export class ItemController {
     async index(req: Request, res: Response) {
 
         try {
-            let items: IItem[] = await this.item_service.list(100, 20);
+            const items: IItem[] = await this.item_service.list(70, 0);
 
             successResponse("List des items", items, res);
         } catch (err) {
             if (err) {
-
+                console.log(err)
             }
         }
 
@@ -46,12 +46,13 @@ export class ItemController {
 
     async getItemById(req: Request, res: Response) {
         try {
-            let item: IItem | null = await this.item_service.readById(req.params.id);
 
-            successResponse(`L'item avec l'id ${item!._id}`, item, res);
+            const item: IItem | null = await this.item_service.readById(req.params.id);
+
+            successResponse(`L'item avec l'id ${item?._id}`, item, res);
         } catch (err) {
             if (err) {
-
+                console.log(err)
             }
         }
     }
