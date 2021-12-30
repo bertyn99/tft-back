@@ -88,42 +88,47 @@ export default class ScrappingService {
     if (model == "Items") {
       const service = new ItemService();
       data.forEach((elm) => {
-        service.create(elm);
+        service.initOrUpdateItem(elm);
       });
     }
     if (model == "Champions") {
       const service = new ChampionService();
       data.forEach((elm) => {
-        service.create(elm);
+        service.initOrUpdateChamp(elm);
       });
     }
     if (model == "Traits") {
       const service = new TraitService();
       data.forEach((elm) => {
-        service.create(elm);
+        service.initOrUpdateTrait(elm);
       });
     }
   }
   async init() {
-    /*    const s = new ItemService()
-           const c = new ChampionService()
-           const t = new TraitService()
-           s.clearItems().then((value) => console.log(`Items ${value.deletedCount}row deleted`))
-   
-           c.clearChampions().then((value) => console.log(`Champ ${value.deletedCount}row deleted`))
-           t.clearTrait().then((value) => console.log(`Champ ${value.deletedCount}row deleted`))
-   
+    const s = new ItemService();
+    const c = new ChampionService();
+    const t = new TraitService();
+    s.clearItems().then((value) =>
+      console.log(`Items ${value.deletedCount}row deleted`)
+    );
 
-        const data = await this.fetchData();
+    c.clearChampions().then((value) =>
+      console.log(`Champ ${value.deletedCount}row deleted`)
+    );
+    t.clearTrait().then((value) =>
+      console.log(`Champ ${value.deletedCount}row deleted`)
+    );
 
-        this.items = this.parseData(data, 'item')
-        this.traits = this.parseData(data, 'trait')
-        this.champions = this.parseData(data, 'champion')
-        console.log("nb d'items #" + this.items.length)
-        console.log("nb de trait #" + this.traits.length)
-        console.log("nb de champions #" + this.champions.length)
-        this.saveDataToDB("Items", this.items);
-        this.saveDataToDB("Champions", this.champions);
-        this.saveDataToDB("Traits", this.traits); */
+    const data = await this.fetchData();
+
+    this.items = this.parseData(data, "item");
+    this.traits = this.parseData(data, "trait");
+    this.champions = this.parseData(data, "champion");
+    console.log("nb d'items #" + this.items.length);
+    console.log("nb de trait #" + this.traits.length);
+    console.log("nb de champions #" + this.champions.length);
+    this.saveDataToDB("Items", this.items);
+    this.saveDataToDB("Champions", this.champions);
+    this.saveDataToDB("Traits", this.traits);
   }
 }

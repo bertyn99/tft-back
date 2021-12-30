@@ -1,7 +1,6 @@
-import * as mongoose from "mongoose";
+import { model, Schema, Model } from "mongoose";
 
 import { Ability, IChampion, Statistic } from "./model";
-const Schema = mongoose.Schema;
 
 const Ability = new Schema(
   {
@@ -44,4 +43,14 @@ const championSchema = new Schema({
   ],
 });
 
-export default mongoose.model<IChampion>("champions", championSchema);
+/* championSchema.pre('save', (next) => {
+  const c:any=this
+  c.modification_notes.push({
+    modified_on:new Date(),
+    modified_by: "admin",
+    modified_note: "init bdd",
+  })
+  next()
+}) */
+
+export const Champion: Model<IChampion> = model("champions", championSchema);

@@ -1,8 +1,6 @@
-import * as mongoose from "mongoose";
+import { model, Schema, Model } from "mongoose";
 import { ModificationNote } from "../common/model";
 import { IItem } from "./model";
-
-const Schema = mongoose.Schema;
 
 const itemSchema = new Schema(
   {
@@ -38,4 +36,4 @@ const itemSchema = new Schema(
 );
 
 itemSchema.index({ name: "text", desc: "text" });
-export default mongoose.model<IItem>("items", itemSchema);
+export const Items: Model<IItem> = model("items", itemSchema);
