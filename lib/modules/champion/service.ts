@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { CRUD } from "../common/model/crud";
 import { IChampion } from "./model";
 import { Champion } from "./schema";
@@ -41,14 +42,16 @@ export default class ChampionService implements CRUD {
   async initOrUpdateChamp(c: IChampion): Promise<any> {
     let doc: IChampion | null = await Champion.findById(c._id);
     if (doc) {
-      c.modification_notes = doc.modification_notes;
-      c.modification_notes.push({
-        modified_on: new Date(),
-        modified_by: "admin",
-        modified_note: "update champ",
-      });
-      doc = c;
-      return await doc.save();
+      if (_.isEqual(doc, c)) {
+        c.modification_notes = doc.modification_notes;
+        c.modification_notes.push({
+          modified_on: new Date(),
+          modified_by: "admin",
+          modified_note: "update champ",
+        });
+        doc = c;
+        return await doc.save();
+      }
     } else {
       return this.create(c);
     }

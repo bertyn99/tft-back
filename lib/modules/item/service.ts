@@ -2,7 +2,7 @@ import * as mongoose from "mongoose";
 import { CRUD } from "../common/model/crud";
 import { IItem } from "./model";
 import { Items } from "./schema";
-
+import _ from "lodash";
 export default class ItemService implements CRUD {
   async list(limit: number, page: number): Promise<IItem[]> {
     return await Items.find()
@@ -59,14 +59,18 @@ export default class ItemService implements CRUD {
   async initOrUpdateItem(i: IItem): Promise<any> {
     let doc: IItem | null = await Items.findById(i._id);
     if (doc) {
-      i.modification_notes = doc.modification_notes;
-      i.modification_notes.push({
-        modified_on: new Date(),
-        modified_by: "admin",
-        modified_note: "update item",
-      });
-      doc = i;
-      return await doc.save();
+      if (_.isEqual(doc, i)) {
+        i.modification_notes = doc.modification_notes;
+        i.modification_notes.push({
+          modified_on: new Date(),
+          modified_by: "admin",
+          modified_note: "update item",
+        });
+        doc = i;
+        return await doc.save();
+      } else {
+        return;
+      }
     } else {
       return this.create(i);
     }

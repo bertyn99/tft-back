@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { CRUD } from "modules/common/model/crud";
 import { ITrait } from "./model";
 import { Trait } from "./schema";
@@ -41,14 +42,18 @@ export default class TraitService implements CRUD {
   async initOrUpdateTrait(t: ITrait): Promise<any> {
     let doc: ITrait | null = await Trait.findById(t._id);
     if (doc) {
-      t.modification_notes = doc.modification_notes;
-      t.modification_notes.push({
-        modified_on: new Date(),
-        modified_by: "admin",
-        modified_note: "update item",
-      });
-      doc = t;
-      return await doc.save();
+      if (_.isEqual(doc, t)) {
+        t.modification_notes = doc.modification_notes;
+        t.modification_notes.push({
+          modified_on: new Date(),
+          modified_by: "admin",
+          modified_note: "update trait",
+        });
+        doc = t;
+        return await doc.save();
+      } else {
+        return;
+      }
     } else {
       return this.create(t);
     }
