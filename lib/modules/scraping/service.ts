@@ -108,7 +108,7 @@ export default class ScrappingService {
     const s = new ItemService();
     const c = new ChampionService();
     const t = new TraitService();
-    s.clearItems().then((value) =>
+    /*  s.clearItems().then((value) =>
       console.log(`Items ${value.deletedCount}row deleted`)
     );
 
@@ -117,7 +117,7 @@ export default class ScrappingService {
     );
     t.clearTrait().then((value) =>
       console.log(`Champ ${value.deletedCount}row deleted`)
-    );
+    ); */
 
     const data = await this.fetchData();
 
