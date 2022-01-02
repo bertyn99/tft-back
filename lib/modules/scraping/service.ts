@@ -35,7 +35,7 @@ export default class ScrappingService {
           "gmi"
         );
         const regDesc = new RegExp(
-          "(tft_item_|Cost Units|Cost Unit|Consumable|[1-9] gold|Random Component|Loot goes here)",
+          "(tft_item_|Cost Units|Cost Unit|Consumable|[1-10] gold|Random Component|Loot goes here)",
           "gmi"
         );
         if (!regIcon.test(elm.icon) && !regDesc.test(elm.desc)) {
