@@ -2,27 +2,26 @@ import { Document } from "mongoose";
 import { ModificationNote } from "../common/model";
 
 export interface Effects {
-    health?: Number,
-    armor?: Number,
-    as?: Number,
-    ap?: Number,
-    ad?: Number,
-    damage?: Number,
-    bonusAd?: Number,
-    magicResist?: Number,
-    CritChance?: Number,
-    mana?: Number,
-    bonusAs?: Number,
-    magicReduction?: Number,
-
+  health?: number;
+  armor?: number;
+  as?: number;
+  ap?: number;
+  ad?: number;
+  damage?: number;
+  bonusAd?: number;
+  magicResist?: number;
+  CritChance?: number;
+  mana?: number;
+  bonusAs?: number;
+  magicReduction?: number;
 }
 export interface IItem extends Document {
-    name: String,
-    desc: String,
-    effect: Effects,
-    icon: String,
-    unique: Boolean,
-    from: string[]
+  name: string;
+  desc: string;
+  effect: Effects;
+  icon: string;
+  unique: boolean;
+  from: number[];
 
-    modification_notes: ModificationNote[]
+  modification_notes: ModificationNote[];
 }

@@ -1,22 +1,29 @@
-import mongoose from "mongoose";
+import { model, Schema, Model } from "mongoose";
 import { ITrait, Effect } from "./model";
-const Schema = mongoose.Schema
 
-const effectSchema = new Schema({
+const effectSchema = new Schema(
+  {
     maxUnits: Number,
     minUnits: Number,
     style: Number,
-    variables: [{ name: String, value: [Number] }]
-},
-    { _id: false })
-
+    variables: [{ name: String, value: [Number] }],
+  },
+  { _id: false }
+);
 
 const traitSchema = new Schema({
-    apiName: String,
-    desc: String,
-    effects: [effectSchema],
-    icon: String,
-    name: String
+  apiName: String,
+  desc: String,
+  effects: [effectSchema],
+  icon: String,
+  name: String,
+  modification_notes: [
+    {
+      modified_on: Date,
+      modified_by: String,
+      modified_note: String,
+    },
+  ],
 });
 
-export default mongoose.model<ITrait>('trait', traitSchema);
+export const Trait: Model<ITrait> = model("traits", traitSchema);
