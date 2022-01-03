@@ -7,7 +7,7 @@ import { CommonRoutesConfig } from "./common_routes";
 export class ChampionRoutes extends CommonRoutesConfig {
     controller: ChampionController
     constructor(app: Application) {
-        super(app, 'ItemsRoutes');
+        super(app, 'ChampionRoutes');
         this.controller = new ChampionController
     }
 

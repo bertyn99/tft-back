@@ -1,5 +1,5 @@
 //lib/routes/items_routes.ts
-import {Application, Request, Response } from 'express';
+import { Application, Request, Response } from 'express';
 export abstract class CommonRoutesConfig {
     app: Application;
     name: string;
