@@ -7,7 +7,7 @@ const itemSchema = new Schema(
     _id: { type: Number, required: true },
     name: { type: String, required: true },
     desc: { type: String, required: true },
-    effect: {
+    effects: {
       health: Number,
       armor: Number,
       as: Number,
@@ -34,6 +34,12 @@ const itemSchema = new Schema(
   },
   { _id: false }
 );
-
+/* itemSchema.pre("save", function (this: Type, next) {
+  if (this._doc) {
+    let doc = <IItem>this._doc;
+  }
+  next();
+  return this;
+}); */
 itemSchema.index({ name: "text", desc: "text" });
 export const Items: Model<IItem> = model("items", itemSchema);

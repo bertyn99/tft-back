@@ -1,7 +1,7 @@
 import axios from "axios";
 import _ from "lodash";
 //Item
-import { IItem } from "../item/model";
+import { Effects, IItem } from "../item/model";
 import ItemService from "../item/service";
 
 // Champion
@@ -26,12 +26,13 @@ export default class ScrappingService {
       console.log(err);
     }
   }
+
   parseData(data: any, model: string): any {
     if (model == "item") {
       let items: IItem[] = [];
       data.items.forEach((elm: any, i: number) => {
         const regIcon = new RegExp(
-          "(set4|tft4|/radiant|/mercenary|Light|Shadow|Shadow/S|/augments|consumable_shopreroll|HexBuff|WardensMail|/spatula/(?!set6))",
+          "(set4|tft4|/radiant|/mercenary|Light|Shadow|Shadow/S|/augments|consumable_shopreroll|HexBuff|[1-10] Gold|WardensMail|/spatula/(?!set6))",
           "gmi"
         );
         const regDesc = new RegExp(
@@ -39,12 +40,16 @@ export default class ScrappingService {
           "gmi"
         );
         if (!regIcon.test(elm.icon) && !regDesc.test(elm.desc)) {
-          const id = elm.id;
           elm._id = Math.abs(elm.id);
           elm.icon =
             "https://raw.communitydragon.org/latest/game/" +
             elm.icon.toLowerCase().replace(".dds", ".png");
           delete elm.id;
+          elm.effects = _.mapKeys(elm.effects, function (value, key) {
+            return _.camelCase(key);
+          });
+          elm.desc = this.parseDesc(elm.desc, elm.effects);
+
           items.push(elm);
         }
       });
@@ -84,6 +89,15 @@ export default class ScrappingService {
     }
   }
 
+  parseDesc(txt: string, e: any): string {
+    txt = txt.replace(/%i:\w+%/gi, "");
+    const sub = txt.match(/@\w+@/gi);
+
+    sub?.forEach((elm: string) => {
+      txt = txt.replace(elm, e[`${elm.replace(/@/g, "")}`]);
+    });
+    return txt;
+  }
   async saveDataToDB(model: string, data: any[]): Promise<any> {
     if (model == "Items") {
       const service = new ItemService();
@@ -105,10 +119,10 @@ export default class ScrappingService {
     }
   }
   async init() {
-    const s = new ItemService();
+    /*   const s = new ItemService();
     const c = new ChampionService();
     const t = new TraitService();
-    /*  s.clearItems().then((value) =>
+     s.clearItems().then((value) =>
       console.log(`Items ${value.deletedCount}row deleted`)
     );
 
